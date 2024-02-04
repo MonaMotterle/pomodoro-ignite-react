@@ -5,17 +5,24 @@ import {
   StartCountdownButton,
   StopCountdownButton,
 } from './TimerButton.styles.ts';
+import { useFormContext } from 'react-hook-form';
 
-interface TimerButtonProps {
-  isSubmitDisable?: boolean;
-}
-
-export const TimerButton = ({ isSubmitDisable }: TimerButtonProps) => {
+export const TimerButton = () => {
   const { activeCycle, interruptCurrentCycle } = useContext(CyclesContext);
+  const { watch, reset } = useFormContext();
+
+  const task = watch('task');
+  const isSubmitDisable = !task;
+
+  function handleInterruptCurrentCycle() {
+    interruptCurrentCycle();
+
+    reset();
+  }
 
   if (activeCycle)
     return (
-      <StopCountdownButton onClick={interruptCurrentCycle} type="button">
+      <StopCountdownButton onClick={handleInterruptCurrentCycle} type="button">
         <HandPalm size={24} />
         Interromper
       </StopCountdownButton>
