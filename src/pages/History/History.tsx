@@ -1,15 +1,11 @@
 import { HistoryContainer, HistoryList, Status } from './History.styles.ts';
-
-const tasks = [
-  {
-    task: 'Tarefa',
-    duration: '20 minutos',
-    start: 'Há 2 meses',
-    status: 'Concluído',
-  },
-];
+import { useContext } from 'react';
+import { CyclesContext } from '../../contexts/CyclesContext.tsx';
+import { formatDistanceToNow, getTime } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 export function History() {
+  const { cycles } = useContext(CyclesContext);
   return (
     <HistoryContainer>
       <h1>Meu histórico</h1>
@@ -25,18 +21,33 @@ export function History() {
             </tr>
           </thead>
           <tbody>
-            {tasks.map((item) => {
-              return (
-                <tr>
-                  <td>{item.task}</td>
-                  <td>{item.duration}</td>
-                  <td>{item.start}</td>
-                  <td>
-                    <Status $statusColor="green">{item.status}</Status>
-                  </td>
-                </tr>
-              );
-            })}
+            {cycles
+              .sort((a, b) => getTime(b.startDate) - getTime(a.startDate))
+              .map((cycle) => {
+                return (
+                  <tr key={cycle.id}>
+                    <td>{cycle.task}</td>
+                    <td>{cycle.minutesAmount}</td>
+                    <td>
+                      {formatDistanceToNow(cycle.startDate, {
+                        addSuffix: true,
+                        locale: ptBR,
+                      })}
+                    </td>
+                    <td>
+                      {cycle.finishedDate && (
+                        <Status $statusColor="green">Concluído</Status>
+                      )}
+                      {cycle.interruptedDate && (
+                        <Status $statusColor="red">Interrompido</Status>
+                      )}
+                      {!cycle.finishedDate && !cycle.interruptedDate && (
+                        <Status $statusColor="yellow">Em andamento</Status>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </HistoryList>

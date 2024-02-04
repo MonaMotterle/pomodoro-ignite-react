@@ -54,6 +54,8 @@ export function CyclesContextProvider({
         }
       }),
     );
+
+    setActiveCycleId(null);
   }
 
   function createNewCycle(data: CreateCycleData) {
@@ -90,8 +92,8 @@ export function CyclesContextProvider({
         cycles,
         activeCycle,
         activeCycleId,
-        markCurrentCycleAsFinished,
         amountSecondsPassed,
+        markCurrentCycleAsFinished,
         setSecondsPassed,
         createNewCycle,
         interruptCurrentCycle,

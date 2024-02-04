@@ -60,7 +60,7 @@ export function Countdown() {
 
   useEffect(() => {
     if (activeCycle) {
-      document.title = `${minutes}:${seconds}`;
+      document.title = `${minutes}:${seconds} | Ignite Timer`;
     }
   }, [minutes, seconds, activeCycle]);
 
