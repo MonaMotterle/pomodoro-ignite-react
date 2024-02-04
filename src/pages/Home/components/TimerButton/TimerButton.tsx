@@ -1,35 +1,21 @@
 import { HandPalm, Play } from 'phosphor-react';
 import { useContext } from 'react';
-import { CyclesContext } from '../../Home.tsx';
-import { useFormContext } from 'react-hook-form';
+import { CyclesContext } from '../../../../contexts/CyclesContext.tsx';
 import {
   StartCountdownButton,
   StopCountdownButton,
 } from './TimerButton.styles.ts';
 
-export const TimerButton = () => {
-  const {
-    activeCycle,
-    markCurrentCycleAsInterrupted,
-    updateAmountSecondsPassed,
-    clearActiveCycle,
-  } = useContext(CyclesContext);
-  const { watch, reset } = useFormContext();
+interface TimerButtonProps {
+  isSubmitDisable?: boolean;
+}
 
-  const task = watch('task');
-  const isSubmitDisable = !task;
-
-  function handleInterruptCycle() {
-    markCurrentCycleAsInterrupted();
-    updateAmountSecondsPassed(0);
-    clearActiveCycle();
-
-    reset();
-  }
+export const TimerButton = ({ isSubmitDisable }: TimerButtonProps) => {
+  const { activeCycle, interruptCurrentCycle } = useContext(CyclesContext);
 
   if (activeCycle)
     return (
-      <StopCountdownButton type="button" onClick={handleInterruptCycle}>
+      <StopCountdownButton onClick={interruptCurrentCycle} type="button">
         <HandPalm size={24} />
         Interromper
       </StopCountdownButton>
