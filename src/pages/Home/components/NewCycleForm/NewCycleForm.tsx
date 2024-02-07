@@ -6,9 +6,10 @@ import {
   MinutesAmountInput,
   TaskInput,
 } from './NewCycleForm.styles.ts';
+import { getSeconds } from 'date-fns';
 
 export function NewCycleForm() {
-  const { activeCycle } = useContext(CyclesContext);
+  const { activeCycle, cycles } = useContext(CyclesContext);
   const { register } = useFormContext();
 
   return (
@@ -23,10 +24,12 @@ export function NewCycleForm() {
       />
 
       <datalist id="task-suggestions">
-        <option value="Projeto 1" />
-        <option value="Projeto 2" />
-        <option value="Projeto 3" />
-        <option value="Banana" />
+        {cycles.map((cycle) => (
+          <option
+            key={`${cycle.task}-${getSeconds(cycle.startDate)}`}
+            value={cycle.task}
+          />
+        ))}
       </datalist>
 
       <label htmlFor="minutesAmount">durante</label>

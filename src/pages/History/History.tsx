@@ -21,7 +21,7 @@ export function History() {
             </tr>
           </thead>
           <tbody>
-            {cycles
+            {[...cycles]
               .sort((a, b) => getTime(b.startDate) - getTime(a.startDate))
               .map((cycle) => {
                 return (
