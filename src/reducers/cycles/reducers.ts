@@ -17,7 +17,6 @@ interface CyclesState {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const cyclesReducer = (state: CyclesState, action: any) => {
-  // eslint-disable-next-line no-case-declarations
   const currentCycleIndex = state.cycles.findIndex(
     (cycle) => cycle.id === state.activeCycleId,
   );
